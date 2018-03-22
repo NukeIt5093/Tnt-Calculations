@@ -1,0 +1,7 @@
+main: com.nukeit5093.tntcalc.TntCalc
+version: 1.0
+name: TntCalculations
+author: NukeIt5093
+commands:
+  tntcalc:
+    description: Main TnTCalc command.
