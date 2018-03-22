@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor{
 
+    private String prefix = ChatColor.DARK_RED + "" + ChatColor.BOLD + "[" + ChatColor.RED + "TnTCalc" + ChatColor.DARK_RED + "" + ChatColor.BOLD + "] " + ChatColor.WHITE;
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command cmd, String s, String[] args) {
 
@@ -19,29 +21,36 @@ public class CommandHandler implements CommandExecutor{
 
         if(cmd.getName().equalsIgnoreCase("tntcalc")){
             if(args.length == 2){
-                if(args[0].equalsIgnoreCase("chunk")){
-                    double chunks = Double.valueOf(args[1]);
-                    player.sendMessage("[TnTCalc] Power needed to shoot " + chunks + " chunks: " + calculateChunks(chunks));
-                    return true;
-                }else if(args[0].equalsIgnoreCase("hammer")){
-                    double hammer = Double.valueOf(args[1]);
-                    player.sendMessage("[TnTCalc] Hammer needed to stack " + hammer + " sand: " + calculateHammer(hammer));
+                try{
+                    if(args[0].equalsIgnoreCase("chunk")){
+                        double chunks = Double.valueOf(args[1]);
+                        player.sendMessage(prefix + "Power needed to shoot " + chunks + " chunks: " + calculateChunks(chunks));
+                        return true;
+                    }else if(args[0].equalsIgnoreCase("hammer")){
+                        double hammer = Double.valueOf(args[1]);
+                        player.sendMessage(prefix + "Hammer needed to stack " + hammer + " sand: " + calculateHammer(hammer));
+                        return true;
+                    }
+                }catch(NumberFormatException e){
+                    player.sendMessage(prefix + ChatColor.DARK_RED + "" + ChatColor.BOLD + "Please give a numeric input.");
                     return true;
                 }
             }
 
-            player.sendMessage("[TnTCalc] usage: \n/tntcalc chunk <X> (Calculate the amount of power needed to shoot X chunks\n/tntcalc hammer <X> (Calculate the amount of power needed to stack <X> sand");
+            player.sendMessage(prefix + ChatColor.RED + "Usage: \n/tntcalc chunk <X> " + ChatColor.GRAY + "(Calculate the amount of power needed to shoot X chunks)" + ChatColor.RED + "\n/tntcalc hammer <X> " + ChatColor.GRAY + "(Calculate the amount of power needed to stack <X> sand)");
             return true;
         }
 
         return true;
     }
 
-    public double calculateChunks(double chunk){
-        return ((chunk * 16 ) / 3.5);
+    public int calculateChunks(double chunk){
+        double c = ((chunk * 16 ) / 3.5);
+        return (((int) c) + 1);
     }
 
-    public double calculateHammer(double hammer){
-        return ((hammer * 1.141 )+ 1);
+    public int calculateHammer(double hammer){
+        double h = ((hammer * 1.141 )+ 1);
+        return (((int) h) + 1);
     }
 }
